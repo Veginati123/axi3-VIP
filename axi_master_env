@@ -1,0 +1,33 @@
+class axi_master_env extends uvm_env;
+	//factory registration
+	`uvm_component_utils(axi_master_env)
+
+	
+
+   //memory allocation
+	function new(string name="",uvm_component parent=null);
+		super.new(name,parent);
+	endfunction
+                    //we need to include master_agent coverage and scoreboard
+
+                     axi_master_agent agent;
+                     axi_coverage     cov;
+                     axi_scoreboard  sco;
+
+
+
+        function void build_phase(uvm_phase phase);
+	  super.build_phase(phase);
+	  agent= axi_master_agent::type_id::create("agent",this);
+	  cov=axi_coverage::type_id::create("cov",this);
+	  sco=axi_scoreboard::type_id::create("sco",this);
+
+	
+       endfunction
+       /*function void connect_phase(uvm_phase phase);
+	       super.connect_phase(phase);
+	       //mon to cov
+	       agent.mon.mon_tlm.connect(cov.analysis_export);
+	       
+       endfunction*/
+endclass
