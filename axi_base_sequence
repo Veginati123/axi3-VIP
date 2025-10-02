@@ -1,0 +1,25 @@
+class axi_base_sequence extends uvm_sequence#(axi_tx);
+	`uvm_object_utils(axi_base_sequence)
+	function new(string name="");
+		super.new(name);
+	endfunction
+
+	task body();
+	`uvm_do_with(req,{req.rd == WRITE_ONLY;req.awaddr==2; req.awlen==3; req.awsize==2; req.awburst==1;req.awid==5;});
+      // `uvm_info("SEQ", $sformatf("Write req: addr=%0d len=%0d size=%0d id=%0d",req.awaddr, req.awlen, req.awsize, req.awid), UVM_LOW);
+	
+	`uvm_do_with(req,{req.rd == READ_ONLY;req.araddr==2; req.arlen==3; req.arsize==2; req.arburst==1;req.arid==5;});
+	//`uvm_info("SEQ", $sformatf("Write req: addr=%0d len=%0d size=%0d id=%0d",req.awaddr, req.awlen, req.awsize, req.awid), UVM_LOW);
+	
+
+	//`uvm_do_with(req,{req.rd == WRITE_ONLY;req.awaddr==4; req.awlen==1; req.awsize==3; req.awburst==1;req.awid==2;});
+//`uvm_info("SEQ", $sformatf("Write req: addr=%0d len=%0d size=%0d id=%0d",req.awaddr, req.awlen, req.awsize, req.awid), UVM_LOW);
+	
+	
+	//`uvm_do_with(req,{req.rd == WRITE_ONLY;req.awaddr==1; req.awlen==2; req.awsize==1; req.awburst==1;req.awid==1;});
+//`uvm_info("SEQ", $sformatf("Write req: addr=%0d len=%0d size=%0d id=%0d",req.awaddr, req.awlen, req.awsize, req.awid), UVM_LOW);
+	
+
+	
+	endtask
+endclass
