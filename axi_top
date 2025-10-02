@@ -1,1 +1,41 @@
+module axi_top;
+//clock generation and reset signal
+bit aclk,aresetn;
+//clock generation time we will go with 50%duty cycle(posedge to negedge and
+//negedge to posedge w eneed to maintain same time)
+initial 
 
+	aclk=0;
+	always #5 aclk=~aclk;//0ns aclk=0  5ns aclk=1 10ns aclk=0 
+
+initial begin
+	aresetn=0;// slave driver in reset state
+	repeat(1)@(posedge aclk);
+	aresetn=1;//slave driver in active state
+end
+//we will include physical interface
+axi_interface intf(aclk,aresetn);
+//we will include physical interface
+// we pointing physical interface to virtual interface config_db method
+initial begin
+	uvm_config_db#(virtual axi_interface)::set(null,"*","vif",intf);//virtual axi_interface vif --uvm config is parameterized class
+	//	uvm_config_db#(virtual axi_interface)::set(null,"*","vif",intf); 
+	//we are pointing memory from physical interface to virtual interface
+	//
+	//before accessing signals by using virtual interface handle , we need
+	//to follow steps
+	//
+	//step1: point physical interface to virtual interface ,withiout point
+	//we can't able to acces any interface signals by using virtual
+	//interface handel 
+	//
+	//virtual interface using same memory of physical interface after
+	//pointing only
+end
+
+//we need include axi_test class
+initial begin
+//test class buildphase excuted when run_test excuted 
+run_test("axi_test");
+end
+endmodule
