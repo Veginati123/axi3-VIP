@@ -1,0 +1,60 @@
+typedef enum{WRITE_ONLY, READ_ONLY, WRITE_THEN_READ, WRITE_PARALELL_READ}wr_tx;
+class axi_tx extends uvm_sequence_item;//it will allocate some specific id to specific pkt
+	//factory registration
+	`uvm_object_utils(axi_tx)
+	function new(string name="");
+		super.new(name);
+	endfunction
+	//include 5 channel  axi signals
+	//1.write address channel
+	rand wr_tx      rd; 
+	rand bit[31:0]awaddr;
+	rand bit[3:0]awid;
+	rand bit awvalid;
+	bit awready;
+	rand bit[3:0] awcache;
+	rand bit[1:0]awlock;
+	rand bit[2:0]awprot;
+	rand bit[1:0]awburst;
+        rand bit[3:0]awlen;
+	rand bit[2:0]awsize;
+
+	//2.write data channel
+	rand bit[31:0] wdata[$];//maximum supports 1024 bits
+	rand bit[3:0]wstrb;//maximum 128its
+	rand bit wlast;
+	rand bit wvalid;
+	rand bit[3:0] wid;
+	bit wready;
+	//3.write response channel
+	rand bit bready;
+	bit[3:0] bresp;//from slave
+	bit bvalid;
+	bit[3:0]bid;
+	//4.read address channel
+	rand bit[31:0]araddr;
+	rand bit[3:0]arid;
+	rand bit arvalid;
+	bit arready;
+	rand bit[3:0] arcache;
+	rand bit[1:0]arlock;
+	rand bit[2:0]arprot;
+	rand bit[1:0]arburst;
+        rand bit[3:0]arlen;
+	rand bit[2:0]arsize;
+
+	//5.read data channel
+	rand bit rready;
+	bit[31:0] rdata;
+	bit rvalid;
+	bit[3:0] rresp;
+	bit[3:0] rid;
+	bit rlast;
+	constraint c1{
+		wdata.size() == awlen+1;
+		}
+	constraint c2{
+		wid == awid;}
+
+	
+endclass
